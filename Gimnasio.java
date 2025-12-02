@@ -1,25 +1,25 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public class Gimnasio {
-    private Usuario[] usuarios;
-    private int contadorUsuarios = 0;
-    private double[][] pagos;
-    private ListaEntrenadores entrenadores;
-    private Map<String, Actividad> actividades;
+public class Gimnasio { 
+    private Usuario[] usuarios; // arreglo de usuarios registrados 
+    private int contadorUsuarios = 0; // contador de usuarios actuales 
+    private double[][] pagos; // matriz de pagos [usuarios][mes]
+    private ListaEntrenadores entrenadores; // lista de entrenadores
+    private Map<String, Actividad> actividades; //mapa de actividades por nombre
 
-    public Gimnasio(int maxUsuarios){
+    public Gimnasio(int maxUsuarios){ // constructor que define la capacidad mexima de usuarios
         usuarios = new Usuario[maxUsuarios];
         pagos = new double[maxUsuarios][12];
         entrenadores = new ListaEntrenadores();
         actividades = new HashMap<>();
     }
 
-    public Usuario[] getUsuarios() {
+    public Usuario[] getUsuarios() { //obtiene todos los usuarios
         return usuarios;
     }
 
-    public void agregarUsuarios(Usuario u){
+    public void agregarUsuarios(Usuario u){ //agregar un usuario
         if(contadorUsuarios < usuarios.length){
             usuarios[contadorUsuarios] = u;
             contadorUsuarios++;
@@ -28,7 +28,7 @@ public class Gimnasio {
         }
     }
 
-    public boolean registrarPago(int id, double monto, int mes) {
+    public boolean registrarPago(int id, double monto, int mes) { // registrar un pago para un usuario en un mes en especifico
         int idx = Usuario.buscarUsuario(usuarios, id);
         if(idx == -1){
             System.out.println("Usuario no encontrado");
@@ -38,10 +38,10 @@ public class Gimnasio {
             System.out.println("Mes invalido");
             return false;
         }
-        pagos[idx][mes] = monto;
+        pagos[idx][mes] = monto; //guarda el pago en la matriz 
         return true;
     }
-    public void verHistorialPagosGUI(int id, javax.swing.JTextArea area) {
+    public void verHistorialPagosGUI(int id, javax.swing.JTextArea area) { // muestra el historial de pagos de un usuario en la interfaz
         int idx = Usuario.buscarUsuario(usuarios, id);
         if (idx != -1) {
             Usuario u = usuarios[idx];
@@ -56,7 +56,7 @@ public class Gimnasio {
         }
     }
 
-    public void mostrarInscritosGUI(String nombreActividad, javax.swing.JTextArea area) {
+    public void mostrarInscritosGUI(String nombreActividad, javax.swing.JTextArea area) { // muetra los usuarios inscritos en una actividad en la interfaz
         Actividad act = actividades.get(nombreActividad);
         if (act == null) {
             area.append("La actividad no existe.\n");
@@ -66,11 +66,11 @@ public class Gimnasio {
         act.cola.mostrarColaGUI(area);
     }
 
-    public void mostrarEntrenadoresGUI(javax.swing.JTextArea area) {
+    public void mostrarEntrenadoresGUI(javax.swing.JTextArea area) { // mostrar todos los entrenadores registrados en le interfaz
         entrenadores.mostrarEntrenadoresGUI(area);
     }
 
-    public void registrarActividad(String nombre, int capacidad) {
+    public void registrarActividad(String nombre, int capacidad) { //registra una nueva actividad
         if (!actividades.containsKey(nombre)) {
             actividades.put(nombre, new Actividad(nombre, capacidad));
             System.out.println("Actividad registrada: " + nombre);
@@ -79,7 +79,7 @@ public class Gimnasio {
         }
     }
 
-    public Usuario inscribirEnActividad(int id, String nombreActividad) {
+    public Usuario inscribirEnActividad(int id, String nombreActividad) { //inscribe un usuario a la actividad
         Usuario u = buscarUsuario(id);
         if(u == null){
             System.out.println("Usuario con el ID: " + id + " no existe");
@@ -102,12 +102,12 @@ public class Gimnasio {
         }
     }
 
-    public void registrarEntrenador(String nombre){
+    public void registrarEntrenador(String nombre){ //registra a un nuevo entrenador
         entrenadores.agregarEntrenador(nombre);
         System.out.println("Entrenador registrado: " + nombre);
     }
 
-    public void asignarEntrenador(String actividadNombre, String entrenadorNombre){
+    public void asignarEntrenador(String actividadNombre, String entrenadorNombre){ // asigna un entrenador a una actividad
         Actividad act = actividades.get(actividadNombre);
 
         if(act == null){
@@ -124,7 +124,7 @@ public class Gimnasio {
         act.entrenador = temp;
         System.out.println("Entrenador: " + entrenadorNombre + " asignado a la actividad: " + actividadNombre);
     }
-    private Usuario buscarUsuario(int id) {
+    private Usuario buscarUsuario(int id) { //metodo interno para buscar un usuario por ID
         for (int i = 0; i < contadorUsuarios; i++) {
             if (usuarios[i].getId() == id) {
                 return usuarios[i];
@@ -133,7 +133,7 @@ public class Gimnasio {
         return null;
     }
 
-    public void deshacer(PilaAcciones pila){
+    public void deshacer(PilaAcciones pila){ //funcionalidad para deshacer la ultima accion registrada
         String accion = pila.pop();
         if(accion == null){
             System.out.println("No hay acciones por deshacer");
@@ -185,7 +185,7 @@ public class Gimnasio {
             default -> System.out.println("Acción desconocida: " + tipo);
         }
     }
-    private void eliminarUsuario(int id){
+    private void eliminarUsuario(int id){ //metodo interno para eliminar a un usuario del arreglo
         for(int i = 0; i < contadorUsuarios; i++ ){
             if(usuarios[i].getId() == id){
                 for(int j = i; j < contadorUsuarios - 1; j++){
@@ -197,7 +197,7 @@ public class Gimnasio {
         } 
     }
     
-    public boolean asignarEntrenadorGUI(String actividadNombre, String entrenadorNombre){
+    public boolean asignarEntrenadorGUI(String actividadNombre, String entrenadorNombre){ // metodo para asignar entrenadores desde la interfaz
         Actividad act = actividades.get(actividadNombre);
         if(act == null) return false;
 
@@ -209,7 +209,7 @@ public class Gimnasio {
     }
 
 
-    private void revertirPago(int id, int mes){
+    private void revertirPago(int id, int mes){ // metodo para revertir un pago
         int idx = Usuario.buscarUsuario(usuarios, id);
         if(idx != -1){
             pagos[idx][mes] = 0;
