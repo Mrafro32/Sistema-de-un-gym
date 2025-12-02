@@ -63,9 +63,9 @@ public class GimnasioGUI extends JFrame{
             String nombre = JOptionPane.showInputDialog("Nombre del usuario:");
             int edad = Integer.parseInt(JOptionPane.showInputDialog("Edad:"));
             int id = Integer.parseInt(JOptionPane.showInputDialog("ID:"));
-            Usuario u = new Usuario(nombre, edad, id);
-            gimnasio.agregarUsuarios(u);
-            pilaAcciones.push("agregar_usuario:" + id);
+            Usuario u = new Usuario(nombre, edad, id); 
+            gimnasio.agregarUsuarios(u);//se almacena en el arreglo de usuarios
+            pilaAcciones.push("agregar_usuario:" + id);//se regisra la accion para deshacer
             outputArea.append("Usuario registrado: " + nombre + "\n");
         });
 
@@ -83,7 +83,7 @@ public class GimnasioGUI extends JFrame{
             double monto = Double.parseDouble(JOptionPane.showInputDialog("Monto del pago:"));
             int mes = Integer.parseInt(JOptionPane.showInputDialog("Mes (0-11):"));
             if (gimnasio.registrarPago(id, monto, mes)) {
-                pilaAcciones.push("pago:" + id + ":" + mes);
+                pilaAcciones.push("pago:" + id + ":" + mes); //guardar accion
                 outputArea.append("Pago registrado.\n");
             } else {
                 outputArea.append("Error al registrar pago.\n");
@@ -93,7 +93,7 @@ public class GimnasioGUI extends JFrame{
         btnVerHistorial.addActionListener(e -> {
             int id = Integer.parseInt(JOptionPane.showInputDialog("ID del usuario:"));
             outputArea.append("Historial de pagos del usuario " + id + ":\n");
-            gimnasio.verHistorialPagosGUI(id, outputArea);
+            gimnasio.verHistorialPagosGUI(id, outputArea); //recorre la matriz de pagos y muestra los pagos recientes
         });
 
         btnRegActividad.addActionListener(e -> {
@@ -119,17 +119,17 @@ public class GimnasioGUI extends JFrame{
         btnMostrarInscritos.addActionListener(e -> {
             String actividad = JOptionPane.showInputDialog("Nombre de la actividad:");
             outputArea.append("Inscritos en " + actividad + ":\n");
-            gimnasio.mostrarInscritosGUI(actividad, outputArea);
+            gimnasio.mostrarInscritosGUI(actividad, outputArea); //Recorre la cola circular y muestra a los usuarios
         });
 
         btnDeshacer.addActionListener(e -> {
-            gimnasio.deshacer(pilaAcciones);
+            gimnasio.deshacer(pilaAcciones); //utiliza LIFO para deshacer la accion mas reciente
             outputArea.append("Última acción deshecha.\n");
         });
 
         btnRegEntrenador.addActionListener(e -> {
             String nombre = JOptionPane.showInputDialog("Nombre del entrenador:");
-            gimnasio.registrarEntrenador(nombre);
+            gimnasio.registrarEntrenador(nombre); //agrega a la lista doblemente enlazada circular
             pilaAcciones.push("registrar_entrenador:" + nombre);
             outputArea.append("Entrenador registrado: " + nombre + "\n");
         });
@@ -143,10 +143,10 @@ public class GimnasioGUI extends JFrame{
             String actividad = JOptionPane.showInputDialog("Nombre de la actividad:");
             String entrenador = JOptionPane.showInputDialog("Nombre del entrenador:");
             boolean asignado = gimnasio.asignarEntrenadorGUI(actividad, entrenador);
-            if (asignado) {
+            if (asignado) { //registra la actividad y el nombre del entrenador
                 pilaAcciones.push("asignar_entrenador:" + actividad + ":" + entrenador);
                 outputArea.append("Entrenador asignado a la actividad\n");
-            } else {
+            } else { //si no existe actividad o entrenaor devuelve el mensaje advertencia
                 outputArea.append("No se pudo asignar entrenador\n");
             }
 
