@@ -8,8 +8,8 @@ public class GimnasioGUI extends JFrame{
     private JTextArea outputArea;
 
     public GimnasioGUI(){
-        gimnasio = new Gimnasio(100);
-        pilaAcciones = new PilaAcciones(100);
+        gimnasio = new Gimnasio(200);
+        pilaAcciones = new PilaAcciones(200);
 
         setTitle("Sistema de gimnasio");
         setSize(1920, 1080);
