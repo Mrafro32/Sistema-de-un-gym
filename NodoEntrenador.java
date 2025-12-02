@@ -22,7 +22,7 @@ class ListaEntrenadores {
         cabeza = null;
     }
 
-    public void agregarEntrenador(String nombre) {
+    public void agregarEntrenador(String nombre) { // metodo para agregar entrenador
         NodoEntrenador nuevo = new NodoEntrenador(nombre);
         if(cabeza == null) {
             cabeza = nuevo;
@@ -35,7 +35,7 @@ class ListaEntrenadores {
         }
     }
 
-    public NodoEntrenador buscar(String nombre){
+    public NodoEntrenador buscar(String nombre){ 
         if(cabeza == null) return null;
         NodoEntrenador temp = cabeza;
         do {
@@ -45,7 +45,7 @@ class ListaEntrenadores {
         return null;
     }
 
-    public void mostrarEntrenadoresGUI(JTextArea area){
+    public void mostrarEntrenadoresGUI(JTextArea area){ // muestra la lista de entrenadores registrados en la GUI
         if(cabeza == null) return;
         NodoEntrenador temp = cabeza;
         do {
@@ -54,7 +54,7 @@ class ListaEntrenadores {
         } while(temp != cabeza);
     }
 
-    public void eliminarEntrenador(String nombre) {
+    public void eliminarEntrenador(String nombre) { // elimina el entrenador
         if (cabeza == null) return;
         NodoEntrenador actual = cabeza;
         do {
