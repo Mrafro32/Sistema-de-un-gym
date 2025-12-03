@@ -112,7 +112,7 @@ public class GimnasioGUI extends JFrame{
                 pilaAcciones.push("inscribir:" + actividad + ":" + id);
                 outputArea.append("Usuario inscrito en actividad: " + actividad + "\n");
             }else{
-                outputArea.append("No se pudo inscribir el usuario");
+                outputArea.append("No se pudo inscribir el usuario la actividad esta llena o no existe");
             }
         });
 
